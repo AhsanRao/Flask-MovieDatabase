@@ -16,6 +16,68 @@ db_config = {
 def index():
     return render_template('index.html')
 
+@app.route('/search_actor', methods=['GET', 'POST'])
+def search_actor():
+    if request.method == 'POST':
+        keyword = request.form['keyword']
+        
+        # Connect to the database
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+        
+        # Execute the search query
+        query = """
+        SELECT Actors.Name, Actors.DateOfBirth, Movies.Title
+        FROM Actors
+        LEFT JOIN MovieActor ON Actors.ActorID = MovieActor.ActorID
+        LEFT JOIN Movies ON MovieActor.MovieID = Movies.MovieID
+        WHERE Actors.Name LIKE %s OR Actors.DateOfBirth LIKE %s OR Movies.Title LIKE %s
+        """
+        cursor.execute(query, ('%' + keyword + '%', '%' + keyword + '%', '%' + keyword + '%',))
+        
+        # Fetch the results
+        results = cursor.fetchall()
+        
+        # Close the database connection
+        cursor.close()
+        conn.close()
+        
+        return render_template('actors.html', results=results)
+    
+    return render_template('searchactor.html')
+
+
+
+@app.route('/search_studio', methods=['GET', 'POST'])
+def search_studio():
+    if request.method == 'POST':
+        keyword = request.form['keyword']
+        
+        # Connect to the database
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+        
+        # Execute the search query
+        query = """
+        SELECT Studios.Name, Studios.Address, Movies.Title
+        FROM Studios
+        LEFT JOIN Movies ON Studios.StudioID = Movies.StudioID
+        WHERE Studios.Name LIKE %s OR Studios.Address LIKE %s OR Movies.Title LIKE %s
+        """
+        cursor.execute(query, ('%' + keyword + '%', '%' + keyword + '%', '%' + keyword + '%',))
+        
+        # Fetch the results
+        results = cursor.fetchall()
+        
+        # Close the database connection
+        cursor.close()
+        conn.close()
+        
+        return render_template('studios.html', results=results)
+    
+    return render_template('searchstudio.html')
+
+
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Search Results</title>
+</head>
+
+<body>
+    <h1>Search Results</h1>
+
+    {% if results %}
+    <ul>
+        {% for result in results %}
+        <li>Studio Name: {{ result[0] }}, Studio Address: {{ result[1] }}, Movie Title: {{ result[2] }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No results found</p>
+    {% endif %}
+
+    <a href="/search_studio">Back to search</a>
+</body>
+
+</html>
