@@ -16,6 +16,37 @@ db_config = {
 def index():
     return render_template('index.html')
 
+@app.route('/search_director', methods=['GET', 'POST'])
+def search_director():
+    if request.method == 'POST':
+        keyword = request.form['keyword']
+        
+        # Connect to the database
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+        
+        # Execute the search query
+        query = """
+        SELECT Directors.Name, Directors.DateOfBirth, Movies.Title
+        FROM Directors
+        LEFT JOIN Movies ON Directors.DirectorID = Movies.DirectorID
+        WHERE Directors.Name LIKE %s OR Directors.DateOfBirth LIKE %s OR Movies.Title LIKE %s
+        """
+        cursor.execute(query, ('%' + keyword + '%', '%' + keyword + '%', '%' + keyword + '%',))
+        
+        # Fetch the results
+        results = cursor.fetchall()
+        
+        # Close the database connection
+        cursor.close()
+        conn.close()
+        
+        return render_template('results_directors.html', results=results)
+    
+    return render_template('search_directors.html')
+
+
+
 @app.route('/search_producer', methods=['GET', 'POST'])
 def search_producer():
     if request.method == 'POST':
