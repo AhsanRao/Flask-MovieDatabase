@@ -1,8 +1,8 @@
-<!-- update.html -->
+<!-- search_director.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Update Movie</title>
+    <title>Search Directors</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,19 +24,21 @@
             color: #333;
         }
         
-        label {
-            display: block;
-            margin-top: 10px;
-            color: #333;
+        form {
+            margin-top: 20px;
+            text-align: center;
         }
         
         input[type="text"],
         input[type="submit"] {
-            width: 100%;
             padding: 10px;
             margin-top: 5px;
             border: 1px solid #ccc;
             border-radius: 3px;
+        }
+        
+        input[type="text"] {
+            width: 70%;
         }
         
         input[type="submit"] {
@@ -52,24 +54,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>Update Movie</h1>
-        <form action="/update" method="post">
-            <label for="id">Movie ID:</label>
-            <input type="text" id="id" name="id" required>
-            
-            <label for="title">New Title:</label>
-            <input type="text" id="title" name="title">
-            
-            <label for="year">New Year:</label>
-            <input type="text" id="year" name="year">
-            
-            <label for="genre">New Genre:</label>
-            <input type="text" id="genre" name="genre">
-            
-            <label for="price">New Price:</label>
-            <input type="text" id="price" name="price">
-            
-            <input type="submit" value="Update">
+        <h1>Search Directors</h1>
+        <form method="POST" action="/search_director">
+            <input type="text" name="keyword" placeholder="Enter keyword" required>
+            <input type="submit" value="Search">
         </form>
     </div>
 </body>

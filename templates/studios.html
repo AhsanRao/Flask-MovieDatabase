@@ -1,24 +1,98 @@
+<!-- results_studio.html -->
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Search Results</title>
+    <title>Studios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            margin-top: 20px;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        p.no-results {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+        }
+
+        a.back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #2196F3;
+            text-decoration: none;
+        }
+
+        a.back-link:hover {
+            text-decoration: underline;
+        }
+        .back-btn {
+            display: block;
+            margin: 20px 0;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            background-color: #2196F3;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        
+        .back-btn:hover {
+            background-color: #1e88e5;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Search Results</h1>
+    <div class="container">
+        <h1>Studios</h1>
 
-    {% if results %}
-    <ul>
-        {% for result in results %}
-        <li>Studio Name: {{ result[0] }}, Studio Address: {{ result[1] }}, Movie Title: {{ result[2] }}</li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>No results found</p>
-    {% endif %}
+        {% if results %}
+        <ul>
+            {% for result in results %}
+            <li>
+                <strong>Studio Name:</strong> {{ result[0] }}<br>
+                <strong>Studio Address:</strong> {{ result[1] }}<br>
+                <strong>Movie Title:</strong> {{ result[2] }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="no-results">No results found</p>
+        {% endif %}
 
-    <a href="/search_studio">Back to search</a>
+        <a class="back-btn" href="/">Back to Home</a>
+    </div>
 </body>
 
 </html>
+

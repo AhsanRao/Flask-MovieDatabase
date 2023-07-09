@@ -41,10 +41,43 @@ def search_director():
         cursor.close()
         conn.close()
         
-        return render_template('results_directors.html', results=results)
+        return render_template('result_directors.html', results=results)
     
-    return render_template('search_directors.html')
+    return render_template('search_director.html')
 
+@app.route('/create', methods=['GET', 'POST'])
+def create():
+    if request.method == 'POST':
+        title = request.form['title']
+        year = request.form['year']
+        genre = request.form['genre']
+        running_time = request.form['running_time']
+        director_id = request.form['director_id']
+        studio_id = request.form['studio_id']
+        price = request.form['price']
+        
+        # Connect to the database
+        conn = mysql.connector.connect(**db_config)
+        cursor = conn.cursor()
+        
+        # Execute the insert query
+        query = "INSERT INTO Movies (Title, YearOfRelease, Genre, RunningTime, DirectorID, StudioID, Price) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        cursor.execute(query, (title, year, genre, running_time, director_id, studio_id, price))
+        
+        # Commit the changes and close the database connection
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+        return '''
+            Movie created successfully! 
+            <br>
+            <br>
+            <a href="/">Go back to the home page</a>
+        '''
+
+    
+    return render_template('create.html')
 
 
 @app.route('/search_producer', methods=['GET', 'POST'])
@@ -150,9 +183,16 @@ def search():
         cursor = conn.cursor()
         
         # Execute the search query
-        query = "SELECT * FROM movies WHERE title LIKE %s OR YearOfRelease LIKE %s OR Price LIKE %s"
-        cursor.execute(query, ('%' + keyword + '%', '%' + keyword + '%', '%' + keyword + '%',))
-        
+        query = """
+        SELECT * FROM movies 
+        WHERE title LIKE %s 
+        OR YearOfRelease LIKE %s 
+        OR Price LIKE %s 
+        OR Genre LIKE %s
+        """
+        cursor.execute(query, ('%' + keyword + '%', '%' + keyword + '%', '%' + keyword + '%', '%' + keyword + '%',))
+
+                
         # Fetch the results
         results = cursor.fetchall()
         
@@ -210,7 +250,12 @@ def update():
         cursor.close()
         conn.close()
 
-        return 'Movie updated successfully!'
+        return '''
+            Movie updated successfully! 
+            <br>
+            <br>
+            <a href="/">Go back to the home page</a>
+        '''
 
     return render_template('update.html')
 
@@ -233,7 +278,12 @@ def delete():
         cursor.close()
         conn.close()
         
-        return 'Movie deleted successfully!'
+        return '''
+            Movie deleted successfully! 
+            <br>
+            <br>
+            <a href="/">Go back to the home page</a>
+        '''
     
     return render_template('delete.html')
 

@@ -1,14 +1,65 @@
+<!-- search_producer.html -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Search Producers</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        
+        form {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        input[type="text"],
+        input[type="submit"] {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        
+        input[type="text"] {
+            width: 70%;
+        }
+        
+        input[type="submit"] {
+            background-color: #2196F3;
+            color: #fff;
+            cursor: pointer;
+        }
+        
+        input[type="submit"]:hover {
+            background-color: #0d8cf0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Search Producers</h1>
-
-    <form method="POST" action="/search_producer">
-        <input type="text" name="keyword" placeholder="Enter keyword" required>
-        <input type="submit" value="Search">
-    </form>
+    <div class="container">
+        <h1>Search Producers</h1>
+        <form method="POST" action="/search_producer">
+            <input type="text" name="keyword" placeholder="Enter keyword" required>
+            <input type="submit" value="Search">
+        </form>
+    </div>
 </body>
 </html>
+
