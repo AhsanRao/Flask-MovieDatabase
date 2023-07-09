@@ -26,8 +26,8 @@ def search():
         cursor = conn.cursor()
         
         # Execute the search query
-        query = "SELECT * FROM movies WHERE title LIKE %s"
-        cursor.execute(query, ('%' + keyword + '%',))
+        query = "SELECT * FROM movies WHERE title LIKE %s OR YearOfRelease LIKE %s OR Price LIKE %s"
+        cursor.execute(query, ('%' + keyword + '%', '%' + keyword + '%', '%' + keyword + '%',))
         
         # Fetch the results
         results = cursor.fetchall()
@@ -39,6 +39,7 @@ def search():
         return render_template('results.html', results=results)
     
     return render_template('search.html')
+
 
 @app.route('/update', methods=['GET', 'POST'])
 def update():
