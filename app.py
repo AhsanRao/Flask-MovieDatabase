@@ -44,24 +44,51 @@ def search():
 def update():
     if request.method == 'POST':
         movie_id = request.form['id']
-        new_title = request.form['title']
-        
+        new_title = request.form.get('title')
+        new_year = request.form.get('year')
+        new_genre = request.form.get('genre')
+        new_price = request.form.get('price')
+
         # Connect to the database
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor()
+
+        # Prepare the SQL update statement dynamically
+        query_update = "UPDATE movies SET"
+        update_values = []
+        if new_title:
+            query_update += " Title = %s,"
+            update_values.append(new_title)
+        if new_year:
+            query_update += " YearOfRelease = %s,"
+            update_values.append(new_year)
+        if new_genre:
+            query_update += " Genre = %s,"
+            update_values.append(new_genre)
+        if new_price:
+            query_update += " Price = %s,"
+            update_values.append(new_price)
         
+        # If no fields to update, return message
+        if not update_values:
+            return "No fields to update!"
+
+        # Remove the last comma and append the WHERE clause
+        query_update = query_update.rstrip(',') + " WHERE MovieId = %s"
+        update_values.append(movie_id)
+
         # Execute the update query
-        query = "UPDATE movies SET title = %s WHERE MovieId = %s"
-        cursor.execute(query, (new_title, movie_id))
-        
+        cursor.execute(query_update, tuple(update_values))
+
         # Commit the changes and close the database connection
         conn.commit()
         cursor.close()
         conn.close()
-        
+
         return 'Movie updated successfully!'
-    
+
     return render_template('update.html')
+
 
 @app.route('/delete', methods=['GET', 'POST'])
 def delete():
@@ -84,6 +111,26 @@ def delete():
         return 'Movie deleted successfully!'
     
     return render_template('delete.html')
+
+
+@app.route('/movies')
+def view_movies():
+    # Connect to the database
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor()
+    
+    # Execute the query to retrieve all movies
+    query = "SELECT * FROM movies"
+    cursor.execute(query)
+    
+    # Fetch the results
+    results = cursor.fetchall()
+    
+    # Close the database connection
+    cursor.close()
+    conn.close()
+    
+    return render_template('movies.html', results=results)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Movies</title>
+</head>
+<body>
+    <h1>All Movies</h1>
+    {% if results %}
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Year</th>
+                <th>Genre</th>
+                <th>Price</th>
+            </tr>
+            {% for movie in results %}
+                <tr>
+                    <td>{{ movie[0] }}</td>
+                    <td>{{ movie[1] }}</td>
+                    <td>{{ movie[2] }}</td>
+                    <td>{{ movie[3] }}</td>
+                    <td>{{ movie[4] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No movies found.</p>
+    {% endif %}
+</body>
+</html>
